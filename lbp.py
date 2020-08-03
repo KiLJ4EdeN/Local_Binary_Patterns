@@ -10,7 +10,7 @@ import numpy as np
 
 class LocalBinaryPatterns:
     def __init__(self, numPoints, radius):
-        # store the number of points and radius
+        # store the number of points and radius size.
         self.numPoints = numPoints
         self.radius = radius
 
