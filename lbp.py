@@ -42,7 +42,7 @@ def calc_lbp(image, kernel_size=3):
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # allocation.
     lbp_image = np.zeros_like(gray_image)
-    kernel_size = 3
+    kernel_size = kernel_size
     center_pixel = int(kernel_size // 2)
     for ih in range(0, image.shape[0] - kernel_size):
         for iw in range(0, image.shape[1] - kernel_size):
