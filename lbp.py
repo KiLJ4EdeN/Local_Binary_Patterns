@@ -28,3 +28,37 @@ class LocalBinaryPatterns:
         hist /= (hist.sum() + eps)
         # return the histogram of Local Binary Patterns
         return hist
+    
+ def calc_lbp(image):
+    """
+    Calculate a local binary pattern image for a given photo.
+    :param image: image to find the hist on
+    """
+
+    # convert image to gray.
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    # allocation.
+    lbp_image = np.zeros_like(gray_image)
+    kernel_size = 3
+    for ih in range(0, image.shape[0] - kernel_size):
+        for iw in range(0, image.shape[1] - kernel_size):
+
+            # move the kernel along the image.
+            img = gray_image[ih:ih + kernel_size, iw:iw + kernel_size]
+            center = img[1, 1]
+            img01 = (img >= center) * 1.0
+            img01_vector = img01.T.flatten()
+            # it is ok to order counterclock manner
+            # img01_vector = img01.flatten()
+
+            # what?
+            img01_vector = np.delete(img01_vector, 4)
+
+            # what?
+            where_img01_vector = np.where(img01_vector)[0]
+            if len(where_img01_vector) >= 1:
+                num = np.sum(2 ** where_img01_vector)
+            else:
+                num = 0
+            lbp_image[ih + 1, iw + 1] = num
+    return lbp_image
