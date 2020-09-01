@@ -60,7 +60,6 @@ def calc_lbp(image):
             # example: [1. 0. 0. 1. 0. 1. 1. 1.]
 
             non_zero_locations = np.where(flat_kernel)[0]
-            print(non_zero_locations)
             if len(non_zero_locations) >= 1:
                 num = np.sum(2 ** non_zero_locations)
             else:
