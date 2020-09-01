@@ -8,6 +8,7 @@
 from skimage.feature import local_binary_pattern
 import numpy as np
 
+# with scikit-image
 class LocalBinaryPatterns:
     def __init__(self, numPoints, radius):
         # store the number of points and radius size.
@@ -28,7 +29,8 @@ class LocalBinaryPatterns:
         hist /= (hist.sum() + eps)
         # return the histogram of Local Binary Patterns
         return hist
-    
+
+# from scratch, (warning: pretty slow)
 def calc_lbp(image, kernel_size=3):
     """
     Calculate a local binary pattern image for a given photo.
