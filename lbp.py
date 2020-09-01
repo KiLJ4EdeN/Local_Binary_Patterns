@@ -29,17 +29,19 @@ class LocalBinaryPatterns:
         # return the histogram of Local Binary Patterns
         return hist
     
-def calc_lbp(image):
+def calc_lbp(image, kernel_size=3):
     """
     Calculate a local binary pattern image for a given photo.
     :param image: image to find the hist on
+    :param kernel_size: lbp local window size.
     """
 
     # convert image to gray.
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    # tensor allocation.
+    # allocation.
     lbp_image = np.zeros_like(gray_image)
     kernel_size = 3
+    center_pixel = int(kernel_size // 2)
     for ih in range(0, image.shape[0] - kernel_size):
         for iw in range(0, image.shape[1] - kernel_size):
 
@@ -47,7 +49,7 @@ def calc_lbp(image):
             img = gray_image[ih:ih + kernel_size, iw:iw + kernel_size]
 
             # simple filter that only leaves out the ones bigger than the center pixel.
-            center = img[1, 1]
+            center = img[center_pixel, center_pixel]
             # 3 * 3, processed kernel.
             filtered_kernel = (img >= center) * 1.0
 
@@ -65,5 +67,5 @@ def calc_lbp(image):
             else:
                 num = 0
             # adjust the center value.
-            lbp_image[ih + 1, iw + 1] = num
+            lbp_image[ih + center_pixel, iw + center_pixel] = num
     return lbp_image
