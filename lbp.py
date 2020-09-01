@@ -29,7 +29,7 @@ class LocalBinaryPatterns:
         # return the histogram of Local Binary Patterns
         return hist
     
- def calc_lbp(image):
+def calc_lbp(image):
     """
     Calculate a local binary pattern image for a given photo.
     :param image: image to find the hist on
@@ -37,7 +37,7 @@ class LocalBinaryPatterns:
 
     # convert image to gray.
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    # allocation.
+    # tensor allocation.
     lbp_image = np.zeros_like(gray_image)
     kernel_size = 3
     for ih in range(0, image.shape[0] - kernel_size):
@@ -45,20 +45,26 @@ class LocalBinaryPatterns:
 
             # move the kernel along the image.
             img = gray_image[ih:ih + kernel_size, iw:iw + kernel_size]
+
+            # simple filter that only leaves out the ones bigger than the center pixel.
             center = img[1, 1]
-            img01 = (img >= center) * 1.0
-            img01_vector = img01.T.flatten()
+            # 3 * 3, processed kernel.
+            filtered_kernel = (img >= center) * 1.0
+
+            flat_kernel = filtered_kernel.T.flatten()
             # it is ok to order counterclock manner
             # img01_vector = img01.flatten()
 
-            # what?
-            img01_vector = np.delete(img01_vector, 4)
+            # remove the center, e.g the 5th element of a size 9 kernel (3 * 3).
+            flat_kernel = np.delete(flat_kernel, 4)
+            # example: [1. 0. 0. 1. 0. 1. 1. 1.]
 
-            # what?
-            where_img01_vector = np.where(img01_vector)[0]
-            if len(where_img01_vector) >= 1:
-                num = np.sum(2 ** where_img01_vector)
+            non_zero_locations = np.where(flat_kernel)[0]
+            print(non_zero_locations)
+            if len(non_zero_locations) >= 1:
+                num = np.sum(2 ** non_zero_locations)
             else:
                 num = 0
+            # adjust the center value.
             lbp_image[ih + 1, iw + 1] = num
     return lbp_image
