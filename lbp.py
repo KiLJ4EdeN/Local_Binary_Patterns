@@ -5,6 +5,7 @@
 # lbp = descriptor.describe(gray)
 
 
+
 from skimage.feature import local_binary_pattern
 import numpy as np
 
